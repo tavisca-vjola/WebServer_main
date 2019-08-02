@@ -46,7 +46,7 @@
     <Compile Include="httpServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="request.cs" />
+    <Compile Include="Request.cs" />
     <Compile Include="response.cs" />
   </ItemGroup>
   <ItemGroup>
