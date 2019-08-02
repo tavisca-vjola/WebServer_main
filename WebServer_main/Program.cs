@@ -10,6 +10,9 @@ namespace WebServer_main
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Connection Started");
+            HttpServer server = new HttpServer(2808);
+            server.start();
         }
     }
 }

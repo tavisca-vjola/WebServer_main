@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace WebServer_main
 {
-    class httpServer
+    public class HttpServer
     {
         private TcpListener listener;
         bool running = false;
-        httpServer(int port)
+       public  HttpServer(int port)
         {
             listener = new TcpListener(IPAddress.Any, port);
         }
@@ -29,12 +30,11 @@ namespace WebServer_main
             listener.Start();
             while(running)
             {
+                Console.WriteLine("");
                 TcpClient client = listener.AcceptTcpClient();
+                Console.WriteLine("");
                 HandleClient(client);
                 client.Close();
-
-
-
             }
             running = false;
             listener.Stop();
@@ -43,7 +43,16 @@ namespace WebServer_main
 
         private void HandleClient(TcpClient client)
         {
-            throw new NotImplementedException();
+            StreamReader reader = new StreamReader(client.GetStream());
+            string msg = "";
+            while(reader.Peek()!=-1)
+            {
+                msg += reader.ReadLine()+"\n";
+            }
+            Console.WriteLine("Request "+msg);
+
+
+
         }
     }
 }
