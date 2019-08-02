@@ -12,16 +12,22 @@ namespace WebServer_main
         public string Url { get; set; }
 
         public string Host { get; set; }
-        private  Request(string Type,string Url,string Host)
+        private  Request(string type,string url,string host)
         {
-
+            this.Type = type;
+            this.Url = url;
+            this.Host = host;
         }
         public static Request GetRequest(string request)
         {
             if (String.IsNullOrEmpty(request))
                 return null;
             string[] tokens = request.Split(' ');
-            return new Request("","","");
+            string type = tokens[0];
+            string url = tokens[1];
+            string host = tokens[4];
+            return new Request(type,url,host);
+
         }
     }
 }
