@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +13,10 @@ namespace WebServer_main
 {
     public class HttpServer
     {
-        private TcpListener listener;
+      
+        public const string VERSION = "HTTP/1.1";
+        public const string name = "Matthiware Http Server v0.1";
+        public TcpListener listener;
         bool running = false;
        public  HttpServer(int port)
         {
@@ -49,9 +53,11 @@ namespace WebServer_main
             {
                 msg += reader.ReadLine()+"\n";
             }
-            Console.WriteLine("Request "+msg);
+            Debug.WriteLine("Request "+msg);
 
-
+            Request req = Request.GetRequest(msg);
+            Response response = Response.From(req);
+            response.Post(client.GetStream());
 
         }
     }
