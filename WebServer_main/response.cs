@@ -23,10 +23,24 @@ namespace WebServer_main
         {
             if (request == null)
                 return MakeNullRequest(request);
-            return null;
-        }
+            if(request.Type=="GET")
+            {
+                string file = Environment.CurrentDirectory + HttpServer.WEB_dir + request.Url;
+                FileInfo file_name = new FileInfo(file);
+                FileStream fs = file_name.OpenRead();
 
-        private static Response MakeNullRequest(Request request)
+                if (file_name.Exists && file_name.Extension.Contains("."))
+                {
+
+                }
+            }
+            else
+            {
+                return MakeMethodNotAllowed(request);
+            }
+            
+        }
+         private static Response MakeNullRequest(Request request)
         {
             string file = Environment.CurrentDirectory +HttpServer.MSG_dir+"400.html";
             FileInfo file_name = new FileInfo(file);
@@ -36,6 +50,29 @@ namespace WebServer_main
             byte[] data = new byte[fs.Length];
             reader.Read(data, 0, data.Length);
             return new Response("400 Bad Request","html/text",data);
+        }
+
+        private static Response MakeMethodNotAllowed(Request request)
+        {
+            string file = Environment.CurrentDirectory +HttpServer.MSG_dir+"405.html";
+            FileInfo file_name = new FileInfo(file);
+            FileStream fs = file_name.OpenRead();
+
+            BinaryReader reader = new BinaryReader(fs);
+            byte[] data = new byte[fs.Length];
+            reader.Read(data, 0, data.Length);
+            return new Response("405 Method Not Allowed","html/text",data);
+        }
+        private static Response MakePageNotFound(Request request)
+        {
+            string file = Environment.CurrentDirectory + HttpServer.MSG_dir + "404.html";
+            FileInfo file_name = new FileInfo(file);
+            FileStream fs = file_name.OpenRead();
+
+            BinaryReader reader = new BinaryReader(fs);
+            byte[] data = new byte[fs.Length];
+            reader.Read(data, 0, data.Length);
+            return new Response("404 Page Not Found", "html/text", data);
         }
 
         public void Post(NetworkStream stream)
