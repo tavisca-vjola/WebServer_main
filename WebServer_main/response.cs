@@ -31,7 +31,23 @@ namespace WebServer_main
 
                 if (file_name.Exists && file_name.Extension.Contains("."))
                 {
+                   
 
+
+
+                }
+                else
+                {
+                    DirectoryInfo di = new DirectoryInfo(file_name + "/");
+                    FileInfo[] files = di.GetFiles();
+                    foreach (FileInfo ff in files)
+                    {
+                        string number = ff.Name;
+                        if (number.Contains("default.html") || number.Contains("default.htm") || number.Contains("index.html") || number.Contains("index.htm"))
+                        {
+                            file_name = ff;
+                        }
+                    }
                 }
             }
             else
