@@ -23,11 +23,19 @@ namespace WebServer_main
         {
             if (request == null)
                 return MakeNullRequest(request);
+            return null;
         }
 
         private static Response MakeNullRequest(Request request)
         {
-            return new Response("400 Bad Request","html/text",new byte[0]);
+            string file = Environment.CurrentDirectory +HttpServer.MSG_dir+"400.html";
+            FileInfo file_name = new FileInfo(file);
+            FileStream fs = file_name.OpenRead();
+
+            BinaryReader reader = new BinaryReader(fs);
+            byte[] data = new byte[fs.Length];
+            reader.Read(data, 0, data.Length);
+            return new Response("400 Bad Request","html/text",data);
         }
 
         public void Post(NetworkStream stream)

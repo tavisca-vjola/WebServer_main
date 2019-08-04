@@ -13,6 +13,8 @@ namespace WebServer_main
 {
     public class HttpServer
     {
+        public const string MSG_dir = "/root/msg";
+        public const string WEB_dir = "/root/web";
       
         public const string VERSION = "HTTP/1.1";
         public const string name = "Matthiware Http Server v0.1";
