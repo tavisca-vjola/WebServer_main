@@ -24,6 +24,12 @@ namespace WebServer_main
             if (request == null)
                 return MakeNullRequest(request);
         }
+
+        private static Response MakeNullRequest(Request request)
+        {
+            return new Response("400 Bad Request","html/text",new byte[0]);
+        }
+
         public void Post(NetworkStream stream)
         {
             StreamWriter sw = new StreamWriter(stream);
