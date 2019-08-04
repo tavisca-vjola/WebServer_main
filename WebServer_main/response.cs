@@ -31,8 +31,8 @@ namespace WebServer_main
 
                 if (file_name.Exists && file_name.Extension.Contains("."))
                 {
-                   
 
+                    return MakeFromFile(file_name);
 
 
                 }
@@ -46,17 +46,32 @@ namespace WebServer_main
                         if (number.Contains("default.html") || number.Contains("default.htm") || number.Contains("index.html") || number.Contains("index.htm"))
                         {
                             file_name = ff;
+                            return MakeFromFile(file_name);
                         }
                     }
                 }
+                if (!file_name.Exists)
+                    return MakePageNotFound(request);
             }
             else
             {
                 return MakeMethodNotAllowed(request);
             }
-            
+            return MakePageNotFound(request);
         }
-         private static Response MakeNullRequest(Request request)
+
+        private static Response MakeFromFile(FileInfo file_name)
+        {
+          FileStream fs = file_name.OpenRead();
+
+            BinaryReader reader = new BinaryReader(fs);
+            byte[] data = new byte[fs.Length];
+            reader.Read(data, 0, data.Length);
+            fs.Close();
+            return new Response("200 OK", "html/text", data);
+        }
+
+        private static Response MakeNullRequest(Request request)
         {
             string file = Environment.CurrentDirectory +HttpServer.MSG_dir+"400.html";
             FileInfo file_name = new FileInfo(file);
@@ -65,6 +80,7 @@ namespace WebServer_main
             BinaryReader reader = new BinaryReader(fs);
             byte[] data = new byte[fs.Length];
             reader.Read(data, 0, data.Length);
+            fs.Close();
             return new Response("400 Bad Request","html/text",data);
         }
 
@@ -77,6 +93,7 @@ namespace WebServer_main
             BinaryReader reader = new BinaryReader(fs);
             byte[] data = new byte[fs.Length];
             reader.Read(data, 0, data.Length);
+            fs.Close();
             return new Response("405 Method Not Allowed","html/text",data);
         }
         private static Response MakePageNotFound(Request request)
@@ -88,6 +105,7 @@ namespace WebServer_main
             BinaryReader reader = new BinaryReader(fs);
             byte[] data = new byte[fs.Length];
             reader.Read(data, 0, data.Length);
+            fs.Close();
             return new Response("404 Page Not Found", "html/text", data);
         }
 
